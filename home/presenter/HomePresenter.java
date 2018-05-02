@@ -2,6 +2,7 @@ package com.luying.mvp.home.presenter;
 
 import android.util.Log;
 
+import com.luying.mvp.base.BaseObserver;
 import com.luying.mvp.base.BasePresenter;
 import com.luying.mvp.entity.Home;
 import com.luying.mvp.home.model.BannerModel;
@@ -26,9 +27,15 @@ public class HomePresenter extends BasePresenter<HomeView>{
     }
 
     public void loadHome(){
-        model.loadHome(new Observer<Integer>() {
+
+        model.loadHome(new BaseObserver<Integer>(mCompositeDisposable) {
             @Override
-            public void onSubscribe(Disposable d) {
+            protected void onCompleted() {
+
+            }
+
+            @Override
+            protected void onFail() {
 
             }
 
@@ -37,16 +44,6 @@ public class HomePresenter extends BasePresenter<HomeView>{
                 Home home = new Home();
                 home.setNum(integer);
                 mView.getHomeShow(home);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
             }
         });
     }

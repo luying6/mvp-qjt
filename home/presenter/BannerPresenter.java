@@ -2,6 +2,7 @@ package com.luying.mvp.home.presenter;
 
 import android.util.Log;
 
+import com.luying.mvp.base.BaseObserver;
 import com.luying.mvp.base.BasePresenter;
 import com.luying.mvp.entity.Banner;
 import com.luying.mvp.home.model.BannerModel;
@@ -10,7 +11,6 @@ import com.luying.mvp.home.view.BannerView;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableObserver;
 
 /**
  * Created by luying on 2018/4/27.
@@ -26,27 +26,23 @@ public class BannerPresenter extends BasePresenter<BannerView>{
 
     public void loadBanner(){
         mView.showLoading();
-        bannerModel.loadBanner(new Observer<Integer>() {
+
+        bannerModel.loadBanner(new BaseObserver<Integer>(mCompositeDisposable) {
             @Override
-            public void onSubscribe(Disposable d) {
+            protected void onCompleted() {
 
             }
 
             @Override
-            public void onNext(Integer o) {
+            protected void onFail() {
+
+            }
+
+            @Override
+            public void onNext(Integer integer) {
                 Banner banner = new Banner();
-                banner.setNumber(o);
+                banner.setNumber(integer);
                 mView.getBannerShow(banner);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
             }
         });
     }

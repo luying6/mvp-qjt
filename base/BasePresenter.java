@@ -13,15 +13,15 @@ import io.reactivex.disposables.Disposable;
 
 public abstract class BasePresenter<V extends BaseView> implements PresenterLifecycle<V> {
     protected V mView;
-    protected CompositeDisposable mCompositeDisposable;
+    protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    ;
 
 
-    protected Disposable addSubscribe(Disposable disposable){
+    protected void addSubscribe(Disposable disposable){
         if (mCompositeDisposable == null){
             mCompositeDisposable = new CompositeDisposable();
         }
         mCompositeDisposable.add(disposable);
-        return disposable;
     }
     /**
      * 在attachView里面进行初始化WeakReference，是因为使用MergePresenter的时候，普通presenter拿不到view
