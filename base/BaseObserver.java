@@ -39,6 +39,9 @@ public abstract class BaseObserver<T> implements Observer<T> {
 
     protected abstract void onFail();
 
+    /**
+     * 现在是每次请求结束都进行解绑，如果项目里有持续监听的接口可以去掉去掉改方法，改为具体情况下进行解绑
+     */
     private void unBind(){
         this.compositeDisposable.remove(disposable);
     }
