@@ -9,4 +9,5 @@ import com.luying.mvp.entity.Home;
 
 public interface HomeView extends BaseView{
     void getHomeShow(Home home);
+    void isRefresh(Boolean refresh);
 }

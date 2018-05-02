@@ -8,6 +8,8 @@ import com.luying.mvp.home.model.BannerModel;
 import com.luying.mvp.home.model.BannerModelImpl;
 import com.luying.mvp.home.view.BannerView;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -24,7 +26,12 @@ public class BannerPresenter extends BasePresenter<BannerView>{
 
     public void loadBanner(){
         mView.showLoading();
-        bannerModel.loadBanner(new DisposableObserver<Integer>() {
+        bannerModel.loadBanner(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
             @Override
             public void onNext(Integer o) {
                 Banner banner = new Banner();

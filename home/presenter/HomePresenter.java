@@ -10,6 +10,8 @@ import com.luying.mvp.home.model.HomeModel;
 import com.luying.mvp.home.model.HomeModelImpl;
 import com.luying.mvp.home.view.HomeView;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -24,7 +26,12 @@ public class HomePresenter extends BasePresenter<HomeView>{
     }
 
     public void loadHome(){
-        model.loadHome(new DisposableObserver<Integer>() {
+        model.loadHome(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
             @Override
             public void onNext(Integer integer) {
                 Home home = new Home();

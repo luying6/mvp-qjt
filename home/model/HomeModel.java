@@ -1,5 +1,6 @@
 package com.luying.mvp.home.model;
 
+import io.reactivex.Observer;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -7,5 +8,5 @@ import io.reactivex.observers.DisposableObserver;
  */
 
 public interface HomeModel {
-    void loadHome(DisposableObserver<Integer> disposableObserver);
+    void loadHome(Observer<Integer> observer);
 }

@@ -5,6 +5,7 @@ import android.util.Log;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
@@ -15,10 +16,9 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class BannerModelImpl implements BannerModel{
-    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     @Override
-    public void loadBanner(DisposableObserver<Integer> disposableObserver) {
+    public void loadBanner(Observer<Integer> observer) {
         Observable<Integer> observable = Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
@@ -29,8 +29,7 @@ public class BannerModelImpl implements BannerModel{
         observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(disposableObserver);
-        mCompositeDisposable.add(disposableObserver);
+                .subscribe(observer);
 
     }
 }
