@@ -23,6 +23,7 @@ public class HomeActivity extends BaseMvpActivity<MergePresenter> implements Ban
     protected void initData() {
         bannerPresenter.loadBanner();
         homePresenter.loadHome();
+
     }
 
     @Override
