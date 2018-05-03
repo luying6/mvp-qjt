@@ -1,12 +1,30 @@
 ``` java
 public final class Retrofit {
+    //网络请求配置对象(对网络请求接口中的方法注解进行解析后得到的对象)
+    //作用：存储网络请求的配置，如网络请求的方法，数据转换器，网络请求适配器，网络请求工厂，域名地址等
   private final Map<Method, ServiceMethod<?, ?>> serviceMethodCache = new ConcurrentHashMap<>();
-
-  final okhttp3.Call.Factory callFactory;
-  final HttpUrl baseUrl;
+  
+    // 网络请求器的工厂
+    // 作用：生产网络请求器（Call）
+    // Retrofit是默认使用okhttp
+  final okhttp3.Call.Factory callFactory;   
+  final HttpUrl baseUrl;        //传说中的baseUrl
+  
+  
+    // 数据转换器工厂的集合
+    // 作用：放置数据转换器工厂
+    // 数据转换器工厂作用：生产数据转换器（converter）
   final List<Converter.Factory> converterFactories;
+  
+    // 网络请求适配器工厂的集合
+    // 作用：放置网络请求适配器工厂
+    // 网络请求适配器工厂作用：生产网络请求适配器（CallAdapter）
   final List<CallAdapter.Factory> callAdapterFactories;
-  final @Nullable Executor callbackExecutor;
+
+  final @Nullable Executor callbackExecutor;        // 回调方法执行器
+  
+    // 标志位
+    // 作用：是否提前对业务接口中的注解进行验证转换的标志位
   final boolean validateEagerly;
 
   Retrofit(okhttp3.Call.Factory callFactory, HttpUrl baseUrl,
@@ -517,29 +535,47 @@ public final class Retrofit {
         throw new IllegalStateException("Base URL required.");
       }
 
+       //配置网络请求执行器
       okhttp3.Call.Factory callFactory = this.callFactory;
+      
+      //如果没有指定的化就默认使用okhttp进行网络请求
       if (callFactory == null) {
         callFactory = new OkHttpClient();
       }
 
+      //配置回掉执行器
       Executor callbackExecutor = this.callbackExecutor;
+      
+      //若果没有指定，则默认使用Platform检测环境的默认callbackExecutor
+      //即Android默认的callbackExecutor
       if (callbackExecutor == null) {
         callbackExecutor = platform.defaultCallbackExecutor();
       }
 
-      // Make a defensive copy of the adapters and add the default Call adapter.
+       
+       //配置网络请求适配工厂
       List<CallAdapter.Factory> callAdapterFactories = new ArrayList<>(this.callAdapterFactories);
+        //像该集合中添加比如GsonConverterFactory创建的gson对象
       callAdapterFactories.add(platform.defaultCallAdapterFactory(callbackExecutor));
 
-      // Make a defensive copy of the converters.
+        // 配置数据转换工厂
+        //将GsonConverterFactory内置的数据转换器BuiltInConverters添加到集合第二位
+        //GsonConverterFactory添加到集合起的第三位
+        // 数据转换器工厂集合存储的是：默认数据转换器工厂（ BuiltInConverters）、自定义1数据转换器工厂（GsonConverterFactory）、自定义2数据转换器工厂....
       List<Converter.Factory> converterFactories =
           new ArrayList<>(1 + this.converterFactories.size());
+        // 注：
+        //1. 获取合适的网络请求适配器和数据转换器都是从adapterFactories和converterFactories集合的首位-末位开始遍历
+        // 因此集合中的工厂位置越靠前就拥有越高的使用权限
+
+
 
       // Add the built-in converter factory first. This prevents overriding its behavior but also
       // ensures correct behavior when using converters that consume all types.
       converterFactories.add(new BuiltInConverters());
       converterFactories.addAll(this.converterFactories);
 
+       // 最终返回一个Retrofit的对象，并传入上述已经配置好的成员变量
       return new Retrofit(callFactory, baseUrl, unmodifiableList(converterFactories),
           unmodifiableList(callAdapterFactories), callbackExecutor, validateEagerly);
     }

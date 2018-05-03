@@ -24,6 +24,9 @@ public class RetrofitExample {
     public void RetrofitUse(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://fanyi.youdao.com/")
+
+                //这里使用的是Gson进行数据类型的转换，其实就是通过GsonConverterFactory对Gson进行实例化再赋值
+                //将创建好的GsonConverterFactory放进converterFactories数组中
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
