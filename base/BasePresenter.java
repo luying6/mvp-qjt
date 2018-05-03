@@ -14,7 +14,6 @@ import io.reactivex.disposables.Disposable;
 public abstract class BasePresenter<V extends BaseView> implements PresenterLifecycle<V> {
     protected V mView;
     protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-    ;
 
 
     protected void addSubscribe(Disposable disposable){

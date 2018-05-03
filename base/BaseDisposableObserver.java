@@ -23,5 +23,4 @@ public abstract class BaseDisposableObserver<T> extends DisposableObserver<T>{
 
     }
 
-    public abstract void onNext();
 }

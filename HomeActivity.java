@@ -23,7 +23,6 @@ public class HomeActivity extends BaseMvpActivity<MergePresenter> implements Ban
     protected void initData() {
         bannerPresenter.loadBanner();
         homePresenter.loadHome();
-
     }
 
     @Override
@@ -48,6 +47,11 @@ public class HomeActivity extends BaseMvpActivity<MergePresenter> implements Ban
 
     @Override
     public void getHomeShow(Home home) {
+
+    }
+
+    @Override
+    public void isRefresh(Boolean refresh) {
 
     }
 }

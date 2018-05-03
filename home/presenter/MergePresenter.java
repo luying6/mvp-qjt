@@ -17,8 +17,8 @@ public class MergePresenter<V extends BaseView> extends BasePresenter<V> {
         this.view = view;
     }
 
-    public final <Q extends BasePresenter<V>> void requestPresenter(Q... clz) {
-        for (Q cl : clz) {
+    public final <P extends BasePresenter<V>> void requestPresenter(P... clz) {
+        for (P cl : clz) {
             cl.attachView(view);
             presenters.add(cl);
         }
