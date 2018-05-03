@@ -16,7 +16,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
 /**
- * Created by luying on 2018/4/27.
+ * 创建人:luying
+ * 创建时间:2018/4/27.
  */
 
 public class HomePresenter extends BasePresenter<HomeView>{
