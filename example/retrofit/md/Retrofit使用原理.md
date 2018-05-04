@@ -103,3 +103,42 @@ new InvocationHandler() {
 
 ```
 
+####关注点1：```ServiceMethod serviceMethod = loadServiceMethod(method)```
+    
+``` java
+
+<-- loadServiceMethod(method)方法讲解 -->
+// 一个 ServiceMethod 对象对应于网络请求接口里的一个方法
+// loadServiceMethod（method）负责加载 ServiceMethod：
+
+  ServiceMethod loadServiceMethod(Method method) {
+ ServiceMethod<?, ?> result = serviceMethodCache.get(method);
+    if (result != null) return result;
+
+      // 设置线程同步锁
+    synchronized (serviceMethodCache) {
+    
+         // ServiceMethod类对象采用了单例模式进行创建
+         // 即创建ServiceMethod对象前，先看serviceMethodCache有没有缓存之前创建过的网络请求实例
+      result = serviceMethodCache.get(method);
+     
+      // 若没缓存，则通过建造者模式创建 serviceMethod 对象
+      if (result == null) {
+      // 下面会详细介绍ServiceMethod生成实例的过程
+        result = new ServiceMethod.Builder(this, method).build();
+        serviceMethodCache.put(method, result);
+      }
+    }
+    return result;
+  }
+  
+  // 这里就是上面说的创建实例的缓存机制：采用单例模式从而实现一个 ServiceMethod 对象对应于网络请求接口里的一个方法
+  // 注：由于每次获取接口实例都是传入 class 对象
+  // 而 class 对象在进程内单例的，所以获取到它的同一个方法 Method 实例也是单例的，所以这里的缓存是有效的。
+```
+
+serviceMethod实例创建过程
+> result = new ServiceMethod
+                .Builder(this, method)
+                .build();
+                
