@@ -1,5 +1,10 @@
 package com.luying.mvp.example.retrofit;
 
+import com.luying.mvp.App;
+
+import java.util.LinkedHashMap;
+
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -30,5 +35,12 @@ public class RetrofitExample {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+
+                Api NetService = retrofit.create(Api.class);
+                Call<JavaBean> call = NetService.getCall();
+//        LinkedHashMap<Integer, Object> linkedHashMap = new LinkedHashMap<>();
+//        linkedHashMap.values().iterator().next();//获得集合中最不经常用到的元素，实一种Lru算法的实现
+
     }
+
 }
